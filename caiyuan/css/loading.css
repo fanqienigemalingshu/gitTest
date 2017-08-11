@@ -1,0 +1,18 @@
+﻿.cover_layer{
+    position: fixed;
+    top: 0px;
+    background: #D3D3D3;
+    filter: progid:DXImageTransform.Microsoft.Alpha(style=3,opacity=25,finishOpacity=75);
+    opacity: 0.3;
+    left: 0px;
+    z-index: 200;
+    width: 100%;
+    height:100%;
+}
+.loading_img{
+    position: fixed;
+    top:50%;
+    left:50%;
+    z-index:1000;
+    margin-left:-16px;
+}

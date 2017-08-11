@@ -1,0 +1,290 @@
+﻿<!DOCTYPE>
+<html>
+<head lang="en">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+   <meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <script type="text/javascript" src="js/jquery-1.11.1.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/loading.css"/>
+    <script type="text/javascript" src="js/public.js"></script>
+    <script type="text/javascript" src="js/wechatpay.js"></script>
+    <title>微信捐赠</title>
+    <script type="text/javascript">
+    	function onBridgeReady(data){
+		   WeixinJSBridge.invoke(
+		       'getBrandWCPayRequest', {
+		           "appId":data.appId,     //公众号名称，由商户传入     
+		           "timeStamp":data.timeStamp,//时间戳，自1970年以来的秒数     
+		           "nonceStr":data.nonceStr, //随机串     
+		           "package":data.packages,     
+		           "signType":data.signType,         //微信签名方式：     
+		           "paySign":data.paySign //微信签名 
+		       },
+		       function(res){    
+		           if(res.err_msg == "get_brand_wcpay_request：ok" ) {
+		        	   //alert("感谢您对西安建筑科技大学教育事业的支持！");
+		        	   WeixinJSBridge.invoke('closeWindow',{},function(res){
+		        	   });
+		           }// 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回    ok，但并不保证它绝对可靠。 
+		       }
+		   ); 
+		}
+        $(function(){
+            $("._role tr td").on("click",function(){
+                $("._role tr td").find("img").attr("src","picture/non_select.png");
+                $(".donateDetail").find("form").removeClass("show").addClass("hide");
+                $("._"+$(this).attr("id")).removeClass("hide").addClass("show");
+                $(this).find("img").attr("src","picture/select.png");
+                var usertype = "0";
+                if($(this).attr("id")=="student"){
+                	usertype = "0";
+                }else if($(this).attr("id")=="teacher"){
+                	usertype = "1";
+                }else if($(this).attr("id")=="other"){
+                	usertype = "2";
+                }
+                $("#usertype").val(usertype);
+            });
+            $(".subject_type select").change(function() {
+                var _chooseDiv = $(this).find("option:selected").attr("data-title");
+                $("._content div").removeClass("show").addClass("hide");
+                $("."+ _chooseDiv).removeClass("hide").addClass("show");
+            });
+        });
+    </script>
+    <style type="text/css">
+        body,div,ul,li{padding:0px;margin:0px;font-family: Microsoft YaHei;}
+        .show{display: block;}
+        .hide{display: none;}
+        .show1{display: inline-block;}
+        li{list-style: none;}
+        .donateDetail{padding:0 10px;margin-top:15px;}
+        .donateInfoMoney{width:100%;height:40px;clear:both;margin-top:20px;}
+        .donateInfo{width:100%;height:40px;clear:both;margin-top:20px;word-spacing:-1em;/*调整文本，以防止使用两端对齐之后字间距过大*/}
+        .donateInfo span {
+            text-align:justify;text-align-last:justify;/* ie9*/ -moz-text-align-last:justify;/*ff*/ -webkit-text-align-last:justify;/*chrome 20+*/
+        }
+        .university_name_c{display: block;font-size: 20px;font-weight: 500;margin-top:6px;  }
+        .university_name_e{display: block; font-size: 16px;margin-top:5px; opacity: 0.6;}
+        .university_detail{display: block;font-size: 1.0em;margin-top:10px;opacity: 0.8;text-align: justify;line-height: 25px;  }
+        @media screen and (-webkit-min-device-pixel-ratio:0){/* 兼容chrome*/
+            ._name:after{
+                content:".";
+                display: inline-block;
+                width:100%;
+                overflow:hidden;
+                height:0;
+            }
+        }
+        .sign{display: inline-block;margin-top:10px;}
+        ._name{float:left;width:65px;display:inline-block;text-align:justify;margin-top:11px;}
+
+        .to_donate{padding:0 10px;margin-top:15px;}
+        .to_donate img{float: left;width:30px;height:30px;}
+        .to_donate span{display:inline-block;margin:5px 0 0 10px;font-weight: 500;font-size: 18px;}
+        .cutLine{height:1px;background-color:#E2E2E2;width:98%;margin:10px auto;}
+        .donateType{padding:0 10px;margin-top:15px;}
+        .donateType ul li span{width: 30%;display: inline-block;float: left;margin-top:10px;  }
+        .donateType ul li select{float:right;width:70%;height:44px;line-height:40px;background-color: #F6F6F6; font-size: 16px;color:#8C8C8C;padding-left:10px;}
+        .donaterInfo{padding:0 10px;margin-top:15px;}
+        .donaterInfo img{float: left;width:30px;height:30px;}
+        .donaterInfo span{display:inline-block;margin:3px 0 0 10px;font-weight: 500;font-size: 18px;}
+        .job_type{padding:0 10px;margin-top:15px;}
+        ._role tr{display: inline-block;margin-right:10px;}
+        ._role tr img{float: left;width:22px;height:22px;margin-left:8px;}
+        ._role tr span{display: inline-block;margin:2px 0 0 5px;font-size: 14px;}
+        .donateInfo  div{float: right;width:70%;}
+        .donateInfo > div select{width:90%;height:44px;background-color: #F6F6F6;  font-size: 16px;color:#8C8C8C;text-indent:1em;border: solid 1px #D1D1D1;outline: none;}
+        totalFee{width:90%;height:44px;background-color: #F6F6F6;  font-size: 16px;color:#8C8C8C;text-indent:1em;border: solid 1px #D1D1D1;outline: none;}
+        .donateInfo > div input{width:90%;height:44px;background-color: #F6F6F6;  font-size: 16px;color:#8C8C8C;text-indent:0px;border: solid 1px #D1D1D1;outline: none;}
+        .self_Definition_money input{height:30px;width:60px;text-indent:10px;margin:0 10px;font-size:18px;outline: none;background-color: #F6F6F6;border:solid 1px #D1D1D1;margin:5px 0 5px 10px;}
+        .self_Definition_money{margin-left:30%;margin-top:20px;}
+        .mh{display: inline-block;position: absolute;margin-left:0px;margin-top:10px;}
+        ._donatemoney{display: inline-block;margin-top:10px;}
+        .donateMoneyChoose{border:solid 1px #2cbbf3;width: 177px;}
+        .donateMoneyNotChoose{border: solid 1px #cecece;width: 188px;}
+        ._donatemoney div{font-size:14px;display:inline-block;text-align: center;padding:5px 2px;margin-right:5px;}
+        ._donatemoney img{position:absolute;margin-left:-6px;margin-top:15px;width:15px;height:15px;}
+        .self_Define{width:15px;height:15px;float:right;margin-top:30px;}
+        ._content div{text-indent: 2em;line-height: 25px;opacity: 0.8;}
+        .summit{width:80%;background-color:#0e5ad0;margin: 20px auto;border-radius: 5px;height:50px;color: #FFFFFF;line-height: 50px;text-align: center;font-size: 20px;}
+    </style>
+</head>
+<body style="width: 100%;">
+<input id="openid"  value='oMeN2jsYGsFwag0uVxzN71TlI0Dg' type="hidden"/>
+<input id="nickname"  value='Haohao  ' type="hidden"/>
+<input id="headimg"  value='' type="hidden"/>
+<div style="padding:0 0px;">
+    <img style="width:100%;height:200px;" src="picture/jianda.jpg"/>
+</div>
+<div style="padding:0 10px;">
+    <span class="university_name_c">西安财经学院</span>
+<!--    <span class="university_name_e">Xi'an University of Finance and Economics</span>-->
+    <span class="university_detail">饮水思源，勿忘在莒。衷心感谢您的慷慨捐赠，我们将根据您的意愿，用好每一笔捐款，再次感谢您对西安财经学院建设发展的大力支持！</span>
+</div>
+<div class="to_donate">
+    <img src="picture/icon1.png"/>
+    <span>我要捐赠</span>
+    <div style="clear: both;"></div>
+</div>
+<div class="cutLine"></div>
+<div class="donateType">
+    <ul>
+        <li>
+            <span>捐赠项目：</span>
+            <div class="subject_type" style="float: right;width: 70%" >
+                <select style="float: left;width:90%;height:44px;background-color: #F6F6F6;  font-size: 16px;color:#8C8C8C;text-indent:1em;border: solid 1px #D1D1D1;outline: none;" id="itemname">
+                    <option data-title="_a" value="专项基金">专项基金</option>
+                    <option data-title="_b" value="人才培养">人才培养</option>
+                    <option data-title="_c" value="学科发展">学科发展</option>
+                    <option data-title="_d" value="校园建设">校园建设</option>
+                    <option data-title="_e" value="公益活动">公益活动</option>
+                    <option data-title="_f" value="校友服务">校友服务</option>
+                </select>
+            </div>
+            <div style="clear: both;"></div>
+        </li>
+    </ul>
+</div>
+<div class="donaterInfo">
+    <img src="picture/icon2.png"/>
+    <span>捐赠人信息</span>
+    <div style="clear: both;"></div>
+</div>
+<div class="cutLine"></div>
+
+<div class="job_type">
+    <div style="display: inline-block;margin-top:6px;float: left;"><span>捐&nbsp;&nbsp;赠&nbsp;&nbsp;人：</span></div>
+    <div class="_role" style="padding-left:80px;">
+        <input type="hidden" id="usertype" value="0" />
+        <table>
+            <tr>
+                <td id="student">
+                    <img src="picture/select.png" style="margin-top:6px;width: 13px;height: 13px;"/>
+                    <span>校友</span>
+                </td>
+                <td id="teacher">
+                    <img src="picture/non_select.png" style="margin-top:6px;width: 13px;height: 13px;"/>
+                    <span>教职工</span>
+                </td>
+                <td id="other">
+                    <img src="picture/non_select.png" style="margin-top:6px;width: 13px;height: 13px;"/>
+                    <span>热心人士</span>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="donateDetail">
+    <div class="donateInfo">
+        <span class="_name">姓名</span>
+        <span class="sign">：</span>
+        <div>
+            <input type="text" id="name" placeholder="请输入您的姓名">
+        </div>
+    </div>
+    <div class="donateInfo">
+        <span class="_name">手机号码</span>
+        <span class="sign">：</span>
+        <div>
+            <input type="number" id="phone" placeholder="请输入您的手机号码">
+        </div>
+    </div>
+    <div style="clear:both;"></div>
+    <form class="_student">
+        <div class="donateInfo">
+            <span class="_name">专业</span>
+            <span class="sign" style="display: inline-block;margin-top:10px;">：</span>
+            <div>
+                <select id="major">
+                </select>
+                <span class="sign" ></span>
+            </div>
+        </div>
+        <div class="donateInfo">
+            <span class="_name">入学年份</span>
+            <span class="sign" style="display: inline-block;margin-top:10px;">：</span>
+            <div>
+                <select id="enroltime" >
+                </select>
+                <span class="sign" ></span>
+            </div>
+        </div>
+    </form>
+    <input type="hidden" value="" id="door"/>
+    <form class="_teacher hide">
+        <div class="donateInfo">
+            <span class="_name">院系部门</span>
+            <span class="sign">：</span>
+            <div>
+                <select id="department">
+                </select>
+                <span class="sign" ></span>
+            </div>
+        </div>
+    </form>
+    <div class="donateInfoMoney">
+    	<div class="donateInfo">
+            <span class="_name">捐赠金额</span>
+            <span class="sign">：</span>
+            <div>
+                <select id="totalFee">
+	                <option value="60">60元</option>
+	                <option value="120">120元</option>
+	                <option value="600">600元</option>
+	                <option value="1200">1200元</option>
+	                <option value="1956">1956元</option>
+	                <option value="0">其他金额</option>
+            	</select>
+                <span class="sign" ></span>
+            </div>
+        </div>
+    </div>
+    <div id="feeDiv" class="self_Definition_money donateMoneyChoose hide">
+        &nbsp;&nbsp;金额
+        <input id="total_fee" type="number" style="width:80px;" placeholder="0" value=""/>
+        <span val="0">元</span>
+    </div>
+
+    <div class="donateInfo">
+        <span class="_name">用途留言</span>
+        <span class="sign">：</span>
+        <div>
+            <input class="Text" type="text" id="wish" maxlength="25" style="font-size:16px;"  placeholder="填写用途留言"/>
+        </div>
+    </div>
+    <br/>
+   	 <div>
+        <span style="float:left;display:inline-block;text-align:justify;margin-top:11px;">捐赠项目简介</span>
+        <span class="sign">：</span>
+        <div>
+        </div>
+    </div>
+    <br>
+    <div class="_content">
+        <div class="_a" style="text-indent: 2em;">
+         	  用于指定用途的各类专项基金。
+        </div>
+        <div class="_b hide">
+                                              奖励成绩优异学生，资助家庭贫困、因病致贫学生；资助在校学生参加各类竞赛和对外交流项目；资助在校学生社团活动、创新创业和社会实践等活动；奖励资助优秀青年教师进行教学改革、科研创新、学术交流等。
+        </div>
+        <div class="_c hide" style="text-indent: 2em;">
+                                             用于重点学科、重点实验室、重点课程建设；资助教师专著出版和论文发表，资助举办或参加学术会议、竞赛或交流活动。 
+        </div>
+        <div class="_d hide" style="text-indent: 2em;">
+                                              对校友林、指定的报告厅座位、图书馆桌椅等认捐，对会议室、实验室、教室、报告厅、楼宇、场馆等冠名或捐资建设。 
+        </div>
+        <div class="_e hide" style="text-indent: 2em;">
+			    发挥学校学科优势，资助灾区规划建设、古遗址文物保护、环境保护、资源循环利用、扶贫教育、专项救助等公益活动，承担社会责任，与社会共同发展。
+        </div>
+        <div class="_f hide" style="text-indent: 2em;">
+                                              设立校友工作基金，服务助力于校友工作，进行校友会、基金会网络平台建设、资助校友返校聚会活动、设立校友帮扶基金等。
+        </div>
+    </div>
+    <br/>
+</div>
+<div style="clear:both;"></div>
+<div class="summit">
+    捐&nbsp;&nbsp;赠
+</div>
+</body>
+</html>
